@@ -3,6 +3,7 @@ RCG is a script that randomly combines PNG files together in order to generate u
 ![Sample Cat](https://github.com/adnan-mujagic/random-cat-generator/blob/mistress/images/skins/cat-1.png)
 ## Getting started
 Navigate to a folder where you want to add this project,
+
 Clone the repository with:
 > git clone https://github.com/adnan-mujagic/random-cat-generator.git
 
