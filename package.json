@@ -4,7 +4,8 @@
   "description": "This package generates random images based on different parameters",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [
     "nft",
@@ -13,6 +14,8 @@
   "author": "adnan-mujagic",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
     "images": "^3.2.3"
   }
 }
