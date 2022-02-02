@@ -1,7 +1,7 @@
 const backgrounds = ["white", "indian-red", "blue-munsell", "violet-blue", "gold"]
 const eyes = [ "brown", "green", "yellow", "blue", "crimson"]
 // basic, uncommon, rare, scarce, extraordinary
-
+const cat_names = ["Ash", "Pixie", "Daisy", "Trevor", "Garfield", "Bethany", "Dice", "Annie", "Miso", "Charlie", "Kate"]
 
 module.exports.getBackground = () => {
     let number = generateRandomNumber()
@@ -41,6 +41,10 @@ module.exports.getEyes = () => {
     } else {
         return eyes[4]
     }
+}
+
+module.exports.getName = () => {
+    return cat_names[Math.floor(Math.random() * cat_names.length)]
 }
 
 const generateRandomNumber = () => {

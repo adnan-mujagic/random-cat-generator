@@ -1,5 +1,5 @@
 const images = require("images")
-const { getBackground, getSkin, getEyes } = require("./rarity")
+const { getBackground, getSkin, getEyes, getName } = require("./rarity")
 
 const backgrounds = ["white", "indian-red", "blue-munsell", "violet-blue", "gold"]
 const eyes = [ "brown", "green", "yellow", "blue", "crimson"]
@@ -27,8 +27,13 @@ module.exports.generateRandomImage = () => {
 
     // returns file name of the cat
     return {
+        name: getName(),
         path: "cat-" + [background, eye_color, skin].join("-") + ".png",
         eye_rarity: rarities[eyes.indexOf(eye_color)],
         background_rarity: rarities[backgrounds.indexOf(background)]
     }
 }
+
+module.exports.rarities = rarities
+module.exports.backgrounds = backgrounds
+module.exports.eyes = eyes
