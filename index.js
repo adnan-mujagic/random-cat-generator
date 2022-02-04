@@ -1,6 +1,8 @@
 let express = require("express")
 let port = process.env.PORT || 3001
 let cors = require("cors")
+let mongoose = require("mongoose")
+require("dotenv").config()
 
 // Import routes here!
 // ->
@@ -24,4 +26,10 @@ app.use(express.json())
 // ->
 app.use("/api", catRoute)
 
-console.log("Testing");
+const mongo = mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+
+mongo.then(() => {
+    console.log("Connected to Mongo!");
+}).catch((err) => {
+    console.log(err.message);
+})

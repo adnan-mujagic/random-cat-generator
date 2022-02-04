@@ -20,6 +20,21 @@ module.exports.generateEveryPossibleCombination = () => {
     }
 }
 
+module.exports.generateCatData = () => {
+    let possibilities = []
+    for(let i = 0; i < backgrounds.length; i++) {
+        for(let j = 0; j < eyes.length; j++) {
+            for(let k = 0; k < 3; k++) {
+                possibilities.push({
+                    path :[backgrounds[i], eyes[j], k].join("-") + ".png",
+                    minted: false
+                })
+            }
+        }
+    }
+    return possibilities
+}
+
 module.exports.generateRandomImage = () => {
     let background = getBackground()
     let skin = getSkin()

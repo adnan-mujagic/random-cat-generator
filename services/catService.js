@@ -1,4 +1,5 @@
-const { generateRandomImage, eyes, backgrounds, rarities } = require("../general_functions/catGenerator")
+const { generateRandomImage, eyes, backgrounds, rarities, generateCatPaths, generateCatData } = require("../general_functions/catGenerator")
+const Cat = require("./../models/catModel")
 
 module.exports.getCat = (req, res) => {
     let cat = generateRandomImage()
@@ -16,6 +17,60 @@ module.exports.getCat = (req, res) => {
                 value: cat.eye_rarity.toUpperCase()
             }
         ]
+    })
+}
+
+module.exports.uploadAllCattos = (req, res) => {
+    let cattos = generateCatData()
+    Cat.insertMany(cattos, function(err, docs) {
+        if (!err) {
+            res.json({
+                data: cattos
+            })
+        }
+        
+    })
+    
+}
+
+module.exports.nonMintedCattos = (req, res) => {
+    Cat.find({minted: false}).exec(function(err, cattos) {
+        if (err) {
+            res.json({
+                status: "Something went wrong"
+            })
+        } else {
+            res.json({
+                status: "OK",
+                data: cattos
+            })
+        }
+    })
+}
+
+module.exports.mintCat = (req, res) => {
+    let {path} = req.params
+    Cat.findOne({path: path}).exec(function(err, cat) {
+        if (cat === null || err) {
+            res.json({
+                status: "Couldn't find that cat"
+            })
+        } else {
+            cat.minted = true
+            cat.save(function(err) {
+                if (err) {
+                    res.json({
+                        stauts:"Something went wrong while minting the cat!"
+                    })
+                } else {
+                    res.json({
+                        status:"OK",
+                        data: cat
+                    })
+                }
+            })
+        }
+        
     })
 }
 
