@@ -2,22 +2,37 @@ const { generateRandomImage, eyes, backgrounds, rarities, generateCatPaths, gene
 const Cat = require("./../models/catModel")
 
 module.exports.getCat = (req, res) => {
-    let cat = generateRandomImage()
-    res.json({
-        name: cat.name,
-        description: getDescription(cat),
-        image: `https://gateway.pinata.cloud/ipfs/QmQUBh9g2cYhAoTnnCQgfZPPgYk5jt2idvPqRbgCqeTric/${cat.path}`,
-        attributes: [
-            {
-                trait_type: "Background Rarity",
-                value: cat.background_rarity.toUpperCase()
-            },
-            {
-                trait_type: "Eye Rarity",
-                value: cat.eye_rarity.toUpperCase()
-            }
-        ]
+
+    Cat.find({minted: false}).exec(function(err, cats){
+        if (err || cats.length === 0) {
+            res.json({
+                status: "You cannot mint cats anymore"
+            })
+        } else {
+            let randomCat = cats[randomlySelect(cats.length)]
+            let properties = randomCat.path.split("-")
+            let background = properties.length === 4 ? properties[1] : properties[1] + "-" + properties[2]
+            let eye_color = properties.length === 4 ? properties[2] : properties[3]
+            let cat = generateRandomImage(background, eye_color , properties[properties.length - 1][0] , randomCat.path)
+            res.json({
+                name: cat.name,
+                description: getDescription(cat),
+                image: `https://gateway.pinata.cloud/ipfs/QmQUBh9g2cYhAoTnnCQgfZPPgYk5jt2idvPqRbgCqeTric/${cat.path}`,
+                attributes: [
+                    {
+                        trait_type: "Background Color",
+                        value: background.toUpperCase()
+                    },
+                    {
+                        trait_type: "Eye Color",
+                        value: eye_color.toUpperCase()
+                    }
+                ]
+            })
+
+        }
     })
+    
 }
 
 module.exports.uploadAllCattos = (req, res) => {
@@ -31,21 +46,6 @@ module.exports.uploadAllCattos = (req, res) => {
         
     })
     
-}
-
-module.exports.nonMintedCattos = (req, res) => {
-    Cat.find({minted: false}).exec(function(err, cattos) {
-        if (err) {
-            res.json({
-                status: "Something went wrong"
-            })
-        } else {
-            res.json({
-                status: "OK",
-                data: cattos
-            })
-        }
-    })
 }
 
 module.exports.mintCat = (req, res) => {
@@ -74,6 +74,20 @@ module.exports.mintCat = (req, res) => {
     })
 }
 
+const nonMintedCattos = () => {
+    Cat.find({minted: false}).exec(function(err, cattos) {
+        if (err) {
+            return null
+        } else {
+            return cattos
+        }
+    })
+}
+
 const getDescription = (cat) => {
-    return `${cat.name} is a cat with ${cat.background_rarity}, ${backgrounds[rarities.indexOf(cat.background_rarity)].replace("-", " ")} background, and ${cat.eye_rarity}, ${eyes[rarities.indexOf(cat.eye_rarity)].replace("-"," ")} eyes!`
+    return `${cat.name} is a cat with ${backgrounds[rarities.indexOf(cat.background_rarity)].replace("-", " ")} background, and ${eyes[rarities.indexOf(cat.eye_rarity)].replace("-"," ")} eyes!`
+}
+
+const randomlySelect = (length) => {
+    return Math.round(Math.random() * length)
 }

@@ -5,9 +5,6 @@ let router = require("express").Router()
 router.route("/cattos")
     .get(getCat)
 
-router.route("/nonMintedCattos")
-    .get(nonMintedCattos)
-
 router.route("/uploadAllCattos")
     .get(uploadAllCattos)
 

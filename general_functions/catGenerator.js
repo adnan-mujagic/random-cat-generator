@@ -26,7 +26,7 @@ module.exports.generateCatData = () => {
         for(let j = 0; j < eyes.length; j++) {
             for(let k = 0; k < 3; k++) {
                 possibilities.push({
-                    path :[backgrounds[i], eyes[j], k].join("-") + ".png",
+                    path :"cat-" + [backgrounds[i], eyes[j], k].join("-") + ".png",
                     minted: false
                 })
             }
@@ -35,15 +35,15 @@ module.exports.generateCatData = () => {
     return possibilities
 }
 
-module.exports.generateRandomImage = () => {
-    let background = getBackground()
-    let skin = getSkin()
-    let eye_color = getEyes()
+module.exports.generateRandomImage = (preset_bg, preset_eyes, preset_skin, preset_path) => {
+    let background = preset_bg ? preset_bg : getBackground()
+    let eye_color = preset_eyes ? preset_eyes : getEyes()
+    let skin = preset_skin ? preset_skin : getSkin()
 
     // returns file name of the cat
     return {
         name: getName(),
-        path: "cat-" + [background, eye_color, skin].join("-") + ".png",
+        path: preset_path ? preset_path : "cat-" + [background, eye_color, skin].join("-") + ".png",
         eye_rarity: rarities[eyes.indexOf(eye_color)],
         background_rarity: rarities[backgrounds.indexOf(background)]
     }
