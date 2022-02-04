@@ -23,3 +23,5 @@ app.use(express.json())
 // Here we will add all the routes!
 // ->
 app.use("/api", catRoute)
+
+console.log("Testing");
