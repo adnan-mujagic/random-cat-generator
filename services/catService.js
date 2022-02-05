@@ -33,7 +33,7 @@ module.exports.getCat = (req, res) => {
                 ]
             }
 
-            writeFileSync(`./out/${randomCat.path}.json`, JSON.stringify(catMetadata))
+            writeFileSync(`./out/${randomCat.path.replace(".png", ".json")}`, JSON.stringify(catMetadata))
 
             res.json(catMetadata)
 
