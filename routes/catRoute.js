@@ -1,4 +1,4 @@
-const { getCat, uploadAllCattos, nonMintedCattos, mintCat } = require("../services/catService")
+const { getCat, uploadAllCattos, nonMintedCattos, mintCat, getMintedCats } = require("../services/catService")
 
 let router = require("express").Router()
 
@@ -10,5 +10,8 @@ router.route("/uploadAllCattos")
 
 router.route("/mintCat/:supportId")
     .put(mintCat)
+
+router.route("/getMintedCattos")
+    .get(getMintedCats)
 
 module.exports = router

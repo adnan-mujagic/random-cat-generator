@@ -67,6 +67,20 @@ module.exports.mintCat = (req, res) => {
     })
 }
 
+module.exports.getMintedCats = (req, res) => {
+    Cat.find({minted: true}).exec((err, cats) => {
+        if (!err) {
+            res.json({
+                status: "OK",
+                data: cats
+            })
+        } else {
+            res.json({
+                status: "L + Ratio, something went wrong!"
+            })
+        }
+    })
+}
 
 
 const randomlySelect = (length) => {
