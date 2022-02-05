@@ -1,3 +1,4 @@
+const { writeFileSync } = require("fs")
 const { generateRandomImage, eyes, backgrounds, rarities, generateCatPaths, generateCatData } = require("../general_functions/catGenerator")
 const Cat = require("./../models/catModel")
 
@@ -13,8 +14,10 @@ module.exports.getCat = (req, res) => {
             let properties = randomCat.path.split("-")
             let background = properties.length === 4 ? properties[1] : properties[1] + "-" + properties[2]
             let eye_color = properties.length === 4 ? properties[2] : properties[3]
+
             let cat = generateRandomImage(background, eye_color , properties[properties.length - 1][0] , randomCat.path)
-            res.json({
+
+            let catMetadata = {
                 name: cat.name,
                 description: getDescription(cat),
                 image: `https://gateway.pinata.cloud/ipfs/QmQUBh9g2cYhAoTnnCQgfZPPgYk5jt2idvPqRbgCqeTric/${cat.path}`,
@@ -28,7 +31,11 @@ module.exports.getCat = (req, res) => {
                         value: eye_color.toUpperCase()
                     }
                 ]
-            })
+            }
+
+            writeFileSync(`./out/${randomCat.path}.json`, JSON.stringify(catMetadata))
+
+            res.json(catMetadata)
 
         }
     })
@@ -71,16 +78,6 @@ module.exports.mintCat = (req, res) => {
             })
         }
         
-    })
-}
-
-const nonMintedCattos = () => {
-    Cat.find({minted: false}).exec(function(err, cattos) {
-        if (err) {
-            return null
-        } else {
-            return cattos
-        }
     })
 }
 
