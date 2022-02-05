@@ -1,7 +1,8 @@
 const backgrounds = ["white", "indian-red", "blue-munsell", "violet-blue", "gold"]
 const eyes = [ "brown", "green", "yellow", "blue", "crimson"]
-// basic, uncommon, rare, scarce, extraordinary
+const furs = ["orange", "white", "black"]
 const cat_names = ["Ash", "Pixie", "Daisy", "Trevor", "Garfield", "Bethany", "Dice", "Annie", "Miso", "Charlie", "Kate"]
+
 
 module.exports.getBackground = () => {
     let number = generateRandomNumber()
@@ -47,6 +48,41 @@ module.exports.getName = () => {
     return cat_names[Math.floor(Math.random() * cat_names.length)]
 }
 
+module.exports.getProperties = (path) => {
+    let properties = path.split("-")
+    let background = properties.length === 4 ? properties[1] : [properties[1], properties[2]].join("-")
+    let eyeColor = properties.length === 4 ? properties[2] : properties[3]
+    let furIndex = properties[properties.length - 1].replace(".png", "")
+    let fur = furs[parseInt(furIndex)]
+
+    let name = this.getName()
+    let description = getDescription(name, fur, background, eyeColor)
+    let image = `https://gateway.pinata.cloud/ipfs/QmQUBh9g2cYhAoTnnCQgfZPPgYk5jt2idvPqRbgCqeTric/${path}`
+    let attributes = [
+        {
+            trait_type: "Fur Color",
+            value: fur.toUpperCase(),
+        }, {
+            trait_type: "Background Color",
+            value: background.toUpperCase().replace("-", " "),
+        }, {
+            trait_type: "Eye Color",
+            value: eyeColor.toUpperCase()
+        }
+    ]
+
+    return {
+        name,
+        description,
+        image,
+        attributes
+    }
+}
+
 const generateRandomNumber = () => {
     return Math.floor(Math.random() * 100) + 1
+}
+
+const getDescription = (name, fur, background, eyes) => {
+    return `${name} is ${fur === "orange" ? "an" : "a"} ${fur} cat with ${background.replace("-", " ")} background and ${eyes} eyes!`
 }

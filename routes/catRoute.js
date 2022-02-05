@@ -8,7 +8,7 @@ router.route("/cattos")
 router.route("/uploadAllCattos")
     .get(uploadAllCattos)
 
-router.route("/mintCat/:path")
+router.route("/mintCat/:supportId")
     .put(mintCat)
 
 module.exports = router
